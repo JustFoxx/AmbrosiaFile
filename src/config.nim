@@ -18,4 +18,7 @@
 import std/json
 
 proc readJsonConfig*(configCtx: string): JsonNode =
-    parseJson(configCtx)
+    try:
+        parseJson(configCtx)
+    except JsonParsingError:
+        readJsonConfig("{}")

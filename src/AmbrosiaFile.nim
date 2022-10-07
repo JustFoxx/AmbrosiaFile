@@ -17,13 +17,18 @@
 import os
 import std/json
 import config
+import console
 
 const configDir = ".ambrosia"
 const configFile = "config.json"
 
 proc main(home: string) =
   var jsonConfig: JsonNode
-  jsonConfig = config.readJsonConfig()
+  jsonConfig = config.readJsonConfig(readFile(getHomeDir()&"/"&configDir&"/"&configFile))
+  if not jsonConfig{"license"}.getBool():
+    var a = console.license()
+    echo a
+
 
   
 
