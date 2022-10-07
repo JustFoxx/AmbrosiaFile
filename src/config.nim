@@ -1,3 +1,4 @@
+
 # AmbrosiaFile, Make your files be immortal!
 # Copyright (C) 2022  JustFoxx
 
@@ -14,18 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import std/json
-import config
 
-const configDir = ".ambrosia"
-const configFile = "config.json"
-
-proc main(home: string) =
-  var jsonConfig: JsonNode
-  jsonConfig = config.readJsonConfig()
-
-  
-
-if isMainModule:
-  main(getHomeDir())
+proc readJsonConfig*(configCtx: string): JsonNode =
+    parseJson(configCtx)
