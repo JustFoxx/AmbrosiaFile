@@ -15,18 +15,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import std/json
+type 
+    Command* = object
+        name: string
+        description: string
+        run*: proc()
 
-var config = %* {"license":false}
+var cmds* = newSeq[Command]()
 
-proc readConfig*(configPlace: string): JsonNode = 
-    try:
-        return parseJson(readFile(configPlace))
-    except JsonParsingError, IOError:
-        return config
+proc error() =
+    echo "Unknown command!"
 
+proc help() =
+    echo "List of commands!"
+    for cmd in cmds:
+        echo cmd.name&": "&cmd.description
+        
 
-proc writeJsonConfig*(configPlace: string,configNode: JsonNode) =
-    config = configNode
-    writeFile(configPlace, $config)
+proc register*() =
+    cmds.add(Command(name: "hello", description: "help", run: help))
 
+proc findCmdByName*(name: string): Command =
+    for cmd in cmds:
+        if cmd.name == name:
+            return cmd
+        else:
+            return Command(name: "error", description: "error", run: error)

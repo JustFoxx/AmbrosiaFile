@@ -23,12 +23,16 @@ const configDir = ".ambrosia"
 const configFile = "config.json"
 
 proc main(home: string) =
-  var jsonConfig: JsonNode
-  jsonConfig = config.readJsonConfig(readFile(getHomeDir()&"/"&configDir&"/"&configFile))
-  if not jsonConfig{"license"}.getBool():
-    var a = console.license()
-    echo a
-
+  let configPlace = home&"/"&configDir&"/"&configFile
+  var config: JsonNode = config.readConfig(configPlace)
+  let licenseBool = config{"license"}.getBool(false)
+  if not licenseBool:
+    var blL = console.license()
+    config.add("license", newJBool(blL))
+    writeJsonConfig(configPlace,config)
+  else:
+    console.start()
+  
 
   
 
