@@ -6,6 +6,7 @@ description   = "Make your files be immortal! Simple app for making small server
 license       = "GPL-3.0-or-later"
 srcDir        = "src"
 bin           = @["AmbrosiaFile"]
+binDir        = "bin"
 
 
 # Dependencies
