@@ -61,7 +61,8 @@ proc configServer() =
             writeJsonConfig(configPlace, config)
 
     hostname()
-    
+
+proc startServer() = 
 
 
         

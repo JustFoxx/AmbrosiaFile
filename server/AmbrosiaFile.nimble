@@ -12,3 +12,4 @@ binDir        = "bin"
 # Dependencies
 
 requires "nim >= 1.6.8"
+requires "prologue >= 0.6.0"
