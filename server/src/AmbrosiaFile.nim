@@ -19,13 +19,12 @@ import std/json
 import config
 import console
 
-const configDir = ".ambrosia"
-const configFile = "config.json"
-
 proc main(home: string) =
   let configPlace = home&"/"&configDir&"/"&configFile
   var config: JsonNode = config.readConfig(configPlace)
   let licenseBool = config{"license"}.getBool(false)
+  if not dirExists(home&"/"&configDir): createDir(home&"/"&configDir)
+  if not fileExists(configPlace): writeFile(configPlace,"")
   if not licenseBool:
     var blL = console.license()
     config.add("license", newJBool(blL))

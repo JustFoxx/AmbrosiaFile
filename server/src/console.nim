@@ -24,7 +24,7 @@ AmbrosiaFile  Copyright (C) 2022  JustFoxx
     under certain conditions;
 """
 
-const licenseFull = readFile("LICENSE")
+const licenseFull* = readFile("LICENSE")
 
 proc license*(): bool = 
     echo licenseNotice
@@ -46,6 +46,7 @@ proc license*(): bool =
 proc start*() =
   echo "Welcome to AmbrosiaFile!"
   echo "Use `help` for list of commands"
+  commands.register()
   proc cmd() =
     write(stdout, ">> ")
     let input = readLine(stdin)

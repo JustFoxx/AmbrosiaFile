@@ -16,8 +16,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import std/json
+import os
 
-var config = %* {"license":false}
+var config = %* {"license":false,"hostname":"default"}
 
 proc readConfig*(configPlace: string): JsonNode = 
     try:

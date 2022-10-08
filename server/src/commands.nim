@@ -15,6 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import std/strutils
+import system
+import std/strformat
+import config
+
 type 
     Command* = object
         name: string
@@ -23,6 +28,8 @@ type
 
 var cmds* = newSeq[Command]()
 
+# commands
+
 proc error() =
     echo "Unknown command!"
 
@@ -30,14 +37,31 @@ proc help() =
     echo "List of commands!"
     for cmd in cmds:
         echo cmd.name&": "&cmd.description
+
+proc exit() =
+    echo "Exit!"
+    system.quit(1)
+
+proc license() =
+    echo readFile("LICENSE")
+
+proc configServer() =
+    let config = config.readConfig()
+    echo "Server Configuration"
+    
+    write(stdout,&"Hostname ({}):")
+    
+
+# commands
         
 
 proc register*() =
-    cmds.add(Command(name: "hello", description: "help", run: help))
+    cmds.add(Command(name: "help", description: "List of commands", run: help))
+    cmds.add(Command(name: "exit", description: "Exits app", run: exit))
+    cmds.add(Command(name: "license", description: "License which app uses", run: license))
 
 proc findCmdByName*(name: string): Command =
     for cmd in cmds:
-        if cmd.name == name:
+        if cmd.name.toLower().replaceWord(" ","") == name:
             return cmd
-        else:
-            return Command(name: "error", description: "error", run: error)
+    return Command(name: "error", description: "error", run: error)
