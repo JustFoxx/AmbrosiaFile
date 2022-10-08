@@ -1,3 +1,4 @@
+
 # AmbrosiaFile, Make your files be immortal!
 # Copyright (C) 2022  JustFoxx
 
@@ -15,25 +16,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
-import std/json
-import config
-import console
-import places
 
-proc main(home: string) =
-  var config: JsonNode = config.readConfig(configPlace)
-  let licenseBool = config{"license"}.getBool(false)
-  if not dirExists(home&"/"&configDir): createDir(home&"/"&configDir)
-  if not fileExists(configPlace): writeFile(configPlace,"")
-  if not licenseBool:
-    var blL = console.license()
-    config.add("license", newJBool(blL))
-    writeJsonConfig(configPlace,config)
-  else:
-    console.start()
-  
-
-  
-
-if isMainModule:
-  main(getHomeDir())
+const 
+    home*        = os.getHomeDir()
+    configDir*   = ".ambrosia"
+    configFile*  = "config.json"
+    configPlace* = home&"/"&configDir&"/"&configFile

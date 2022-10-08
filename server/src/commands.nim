@@ -17,8 +17,9 @@
 
 import std/strutils
 import system
-import std/strformat
 import config
+import std/json
+import places
 
 type 
     Command* = object
@@ -46,10 +47,24 @@ proc license() =
     echo readFile("LICENSE")
 
 proc configServer() =
-    let config = config.readConfig()
-    echo "Server Configuration"
+    let config: JsonNode = getConfig()
+    var inputHost: string
     
-    write(stdout,&"Hostname ({}):")
+    echo "Server Configuration"
+
+    proc hostname() =
+        write(stdout,"Hostname ("&config{"hostname"}.getStr()&"): ")
+        inputHost = readLine(stdin).toLower().replaceWord(" ","")
+        if inputHost == "": hostname()
+        else:
+            config.add("hostname", newJString(inputHost))
+            writeJsonConfig(configPlace, config)
+
+    hostname()
+    
+
+
+        
     
 
 # commands
@@ -59,6 +74,7 @@ proc register*() =
     cmds.add(Command(name: "help", description: "List of commands", run: help))
     cmds.add(Command(name: "exit", description: "Exits app", run: exit))
     cmds.add(Command(name: "license", description: "License which app uses", run: license))
+    cmds.add(Command(name: "configserver", description: "Configuration of basic stuff in server", run: configServer))
 
 proc findCmdByName*(name: string): Command =
     for cmd in cmds:

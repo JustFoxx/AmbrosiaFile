@@ -16,7 +16,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import std/json
-import os
 
 var config = %* {"license":false,"hostname":"default"}
 
@@ -25,6 +24,8 @@ proc readConfig*(configPlace: string): JsonNode =
         return parseJson(readFile(configPlace))
     except JsonParsingError, IOError:
         return config
+
+proc getConfig*(): JsonNode = config
 
 
 proc writeJsonConfig*(configPlace: string,configNode: JsonNode) =
